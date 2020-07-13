@@ -65,6 +65,7 @@
           >
             <input
               class="input100"
+              id="form_name"
               type="text"
               name="name"
               placeholder="Jméno filmu"
@@ -95,10 +96,21 @@
             <span class="focus-input100"></span>
           </div>
 
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" name="file">
-              <label class="custom-file-label" for="customFile">Vyberte soubor...</label>
+            <div
+            class="wrap-input100 validate-input"
+            data-validate="Vyberte prosím soubor"
+            >
+                <input type="file" class="custom-file-input" id="customFile" name="file">
+                <label class="custom-file-label" for="customFile">Vyberte soubor...</label>
             </div>
+
+            <div style="margin-top: 2%; visibility: hidden" id="progressdiv">
+                <h5 id="upload_text">Nahrávání 0%</h5>
+                <div class="progress">
+                    <div id="progressbar" class="progress-bar bg-dark" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
 
           <div class="container-contact100-form-btn">
             <button class="contact100-form-btn">
@@ -127,7 +139,47 @@
                 var fileName = $(this).val().replace('C:\\fakepath\\', " ");
                 //replace the "Choose a file" label
                 $(this).next('.custom-file-label').html(fileName);
-            })
+            });
+
+        $('form').on('submit', function (event) {
+            event.preventDefault();
+            if($('#form_name').val() == '')
+            {
+                return
+            }
+            $('#progressdiv').css('visibility', 'visible');
+            var formData = new FormData($('form')[0]);
+
+            $.ajax({
+                xhr: function()
+                {
+                  var xhr = new window.XMLHttpRequest();
+
+                  xhr.upload.addEventListener('progress',function (e) {
+                    if(e.lengthComputable)
+                    {
+                      var percentage = Math.round(e.loaded / e.total * 100);
+                      $('#progressbar').attr('aria-valuenow', percentage)
+                          .css('width', percentage + '%');
+                      $('#upload_text').text('Nahrávání ' + percentage + '%');
+                    }
+                  });
+
+                  return xhr;
+                },
+                type: 'POST',
+                url: '/films/create/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    window.location = '/films/success';
+                },
+                error: function () {
+                    window.location.href = '/films/create';
+                },
+              });
+        });
     </script>
 
     <div id="dropDownSelect1"></div>

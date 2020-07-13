@@ -18,10 +18,14 @@
       <tbody>
         {% for film in films %}
             <tr class="clickable" id="{{ film.id }}">
-                <th scope="row">{{ film.id }}</th>
+                <th scope="row">{{ film.id }}<a class="btn" style="visibility: hidden">DRZ PICU FAKT</a></th>
                 <td>{{ film.name }}</td>
                 <td>{{ film.duration }}</td>
-                <td><a href="#" onclick="openWebsite('{{ film.csfd_link }}')">{{ film.csfd_link }}</a></td>
+                {% if film.csfd_link %}
+                    <td><a href="#" onclick="openWebsite('{{ film.csfd_link }}')">{{ film.csfd_link }}</a></td>
+                {% else %}
+                    <td><a class="btn btn-success">Přidat</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
       </tbody>

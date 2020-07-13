@@ -23,6 +23,7 @@ urlpatterns = [
     path('logout/', auth.user_logout),
     path('films/', film.index, name='films'),
     path('films/create/', film.create, name='create'),
+    path('films/success/', film.upload_success),
     # path('films/<id>/', film.show),
 
     path('films/<id>/', film.film), # temporary

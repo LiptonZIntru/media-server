@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from app.models import User, FilmViewed, Film
 from app.decorators import login_required
@@ -27,11 +27,17 @@ def create(request):
     if request.method == 'GET':
         return render(request, 'films/create.html')
     elif request.method == "POST":
+        if not request.FILES.get('file'):
+            messages.error(request, 'Vyberte prosím soubor')
+            return HttpResponseBadRequest()
+            # return redirect('create')
+
         file = request.FILES['file']
 
         if not file.name.endswith('.mp4'):
             messages.error(request, 'Soubor není video ve formátu mp4')
-            return redirect('create')
+            return HttpResponseBadRequest()
+            # return redirect('create')
 
         film_url = file_path + file.name  # request.POST['name']
         f = open(film_url, 'wb+')
@@ -77,3 +83,9 @@ def edit(request, id):
 def film(request, id):
     film_url = Film.objects.filter(id=id)[0].film_url
     return FileResponse(open(film_url, 'rb'))
+
+
+@login_required
+def upload_success(request):
+    messages.success(request, 'Film byl přidán')
+    return redirect('films')
