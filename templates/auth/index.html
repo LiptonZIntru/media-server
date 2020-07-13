@@ -31,7 +31,7 @@
 <body>
 	<div class="limiter" style="z-index: -1">
 		<div class="container-login100" style="background-image: url('{% static "images/bg-01.jpg" %}');">
-            <div style="left: auto; right: auto; position: absolute; top: 10%; width: 20%">
+            <div style="left: auto; right: auto; position: absolute; top: 10%; min-width: 200px; max-width: 70%">
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags }}" role="alert" style="text-align: center">

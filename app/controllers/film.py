@@ -24,7 +24,7 @@ def create(request):
     elif request.method == "POST":
         file = request.FILES['file']
 
-        if not file.endswith('.mp4'):
+        if not file.name.endswith('.mp4'):
             messages.error(request, 'Soubor není video ve formátu mp4')
             return redirect('create')
 
