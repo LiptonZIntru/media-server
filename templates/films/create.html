@@ -1,0 +1,20 @@
+{% extends 'layouts/layout.html' %}
+
+{% block title %}
+    Přidat film
+{% endblock %}
+
+{% block content %}
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        Jméno <input type="text" name="name"><br>
+        Popis (nepovinné) <textarea name="description"></textarea><br>
+        Odkaz na CSFD <input type="text" name="csfd_link"><br>
+        <input type="file" name="file"><br>
+        <input type="submit">
+    </form>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

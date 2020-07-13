@@ -1,0 +1,33 @@
+{% extends 'layouts/layout.html' %}
+
+{% block title %}
+    Filmy
+{% endblock %}
+
+{% block content %}
+    <div style="padding-top: 50px"></div>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Jméno</th>
+          <th scope="col">Délka</th>
+          <th scope="col">csfd odkaz</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for film in films %}
+            <tr>
+              <th scope="row">{{ film.id }}</th>
+              <td>{{ film.name }}</td>
+              <td>{{ film.duration }}</td>
+              <td><a href="{{ film.csfd_link }}">csfd</a></td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

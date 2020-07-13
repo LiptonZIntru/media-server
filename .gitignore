@@ -1,6 +1,6 @@
 db.sqlite3
 manage.py
-films
+films1
 venv
 .idea
 */__pycache__
