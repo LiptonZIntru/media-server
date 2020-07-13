@@ -5,16 +5,162 @@
 {% endblock %}
 
 {% block content %}
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        Jméno <input type="text" name="name"><br>
-        Popis (nepovinné) <textarea name="description"></textarea><br>
-        Odkaz na CSFD <input type="text" name="csfd_link"><br>
-        <input type="file" name="file"><br>
-        <input type="submit">
-    </form>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static "film/images/icons/favicon.ico"  %}"/>
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/vendor/bootstrap/css/bootstrap.min.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "film/vendor/animate/animate.css"  %}"/>
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/vendor/css-hamburgers/hamburgers.min.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/vendor/animsition/css/animsition.min.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/vendor/select2/select2.min.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static "film/vendor/daterangepicker/daterangepicker.css" %}"
+    />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "film/css/util.css"  %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "film/css/main.css"  %}"/>
+    <!--===============================================================================================-->
+
+
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+        <form class="contact100-form validate-form" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+          <span class="contact100-form-title">
+            Nahrát film
+          </span>
+
+          <div
+            class="wrap-input100 validate-input"
+            data-validate="Vyplňte prosím jméno"
+          >
+            <input
+              class="input100"
+              type="text"
+              name="name"
+              placeholder="Jméno filmu"
+            />
+            <span class="focus-input100"></span>
+          </div>
+
+          <div
+            class="wrap-input100"
+          >
+            <input
+              class="input100"
+              type="text"
+              name="csfd_link"
+              placeholder="Odkaz na csfd (nepovinný)"
+            />
+            <span class="focus-input100"></span>
+          </div>
+
+          <div
+            class="wrap-input100"
+          >
+            <textarea
+              class="input100"
+              name="description"
+              placeholder="Popis (nepovinný)"
+            ></textarea>
+            <span class="focus-input100"></span>
+          </div>
+
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" name="file">
+              <label class="custom-file-label" for="customFile">Vyberte soubor...</label>
+            </div>
+
+          <div class="container-contact100-form-btn">
+            <button class="contact100-form-btn">
+              <span>
+                <i class="fa fa-paper-plane-o m-r-6" aria-hidden="true"></i>
+                Nahrát
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
 {% endblock %}
 
 {% block js %}
+    <script>
+        $(document).ready(function () {
+            document.getElementById('created').hidden = true;
+        });
+        function goToCsfd() {
+            window.open('https://www.csfd.cz/hledat/?q=' + document.getElementById('name').value, '_blank');
+        }
+        $('#customFile').on('change',function(){
+                //get the file name
+                var fileName = $(this).val().replace('C:\\fakepath\\', " ");
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+            })
+    </script>
 
+    <div id="dropDownSelect1"></div>
+
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/animsition/js/animsition.min.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/bootstrap/js/popper.js" %}"></script>
+    <script src="{% static "film/vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/select2/select2.min.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/daterangepicker/moment.min.js" %}"></script>
+    <script src="{% static "film/vendor/daterangepicker/daterangepicker.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/vendor/countdowntime/countdowntime.js" %}"></script>
+    <!--===============================================================================================-->
+    <script src="{% static "film/js/main.js" %}"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-23581568-13");
+    </script>
 {% endblock %}

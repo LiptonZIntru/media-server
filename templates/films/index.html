@@ -6,7 +6,7 @@
 
 {% block content %}
     <div style="padding-top: 50px"></div>
-    <table class="table table-striped">
+    <table class="table table-responsive-sm">
       <thead class="thead-dark">
         <tr>
           <th scope="col">ID</th>
@@ -18,10 +18,10 @@
       <tbody>
         {% for film in films %}
             <tr class="clickable" id="{{ film.id }}">
-              <th scope="row">{{ film.id }}</th>
-              <td>{{ film.name }}</td>
-              <td>{{ film.duration }}</td>
-              <td><a href="{{ film.csfd_link }}">csfd</a></td>
+                <th scope="row">{{ film.id }}</th>
+                <td>{{ film.name }}</td>
+                <td>{{ film.duration }}</td>
+                <td><a href="#" onclick="openWebsite('{{ film.csfd_link }}')">{{ film.csfd_link }}</a></td>
             </tr>
         {% endfor %}
       </tbody>
@@ -33,9 +33,18 @@
     /*$.ready(function () {
 
     });*/
+    var clicked = false;
+    function openWebsite(url) {
+        window.open(url, '_blank');
+        clicked = true
+    }
     $('.clickable').click(function () {
-        var win = window.open('/films/' + $(this).attr('id'), '_blank');
-        win.focus();
-    })
+        if(!clicked)
+        {
+            var win = window.open('/films/' + $(this).attr('id'), '_blank');
+            win.focus();
+        }
+        clicked = false;
+    });
     </script>
 {% endblock %}

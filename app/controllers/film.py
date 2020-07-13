@@ -3,6 +3,9 @@ from django.http import FileResponse
 from django.shortcuts import render, redirect
 from app.models import User, FilmViewed, Film
 from app.decorators import login_required
+import moviepy
+from moviepy.editor import VideoFileClip
+import datetime
 
 # Create your views here.
 
@@ -11,6 +14,8 @@ file_path = 'films/'
 @login_required
 def index(request):
     films = Film.objects.all()
+    for film in films:
+        film.duration = datetime.timedelta(seconds=int(film.duration))
     return render(request, 'films/index.html',
                   {
                       'films': films,
@@ -34,7 +39,7 @@ def create(request):
             f.write(chunk)
         Film.objects.create(
             name=request.POST['name'],
-            duration='',
+            duration=int(VideoFileClip(film_url).duration),
             description=request.POST.get('description'),
             csfd_link=request.POST['csfd_link'],
             author=request.user,
@@ -47,6 +52,7 @@ def create(request):
 @login_required
 def show(request, id):
     film = Film.objects.filter(id=id)
+    film.duration = datetime.timedelta(seconds=int(film.duration))
     return render(request, 'films/show.html',
                   {
                       'film': film,

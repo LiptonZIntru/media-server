@@ -47,7 +47,7 @@ class Film(models.Model):
     name = models.CharField(max_length=100, unique=True)
     duration = models.CharField(max_length=50)
     description = models.TextField(null=True)
-    csfd_link = models.CharField(max_length=150, unique=True)
+    csfd_link = models.CharField(max_length=150, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     film_url = models.CharField(max_length=100, unique=True)
 
