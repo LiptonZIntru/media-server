@@ -128,6 +128,8 @@
 
 {% block js %}
     <script>
+        var uploaded = true;
+
         $(document).ready(function () {
             document.getElementById('created').hidden = true;
         });
@@ -143,6 +145,7 @@
 
         $('form').on('submit', function (event) {
             event.preventDefault();
+            uploaded = false;
             if($('#form_name').val() == '')
             {
                 return
@@ -173,12 +176,18 @@
                 processData: false,
                 contentType: false,
                 success: function () {
+                    uploaded = true;
                     window.location = '/films/success';
                 },
                 error: function () {
+                    uploaded = true;
                     window.location.href = '/films/create';
                 },
               });
+        });
+        $(window).bind('beforeunload', function(){
+            if(!uploaded)
+                return 'Touto akcí se zruší upload. Chcete pokračovat?';
         });
     </script>
 
