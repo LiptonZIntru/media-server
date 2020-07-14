@@ -6,10 +6,12 @@ from app.decorators import login_required
 import moviepy
 from moviepy.editor import VideoFileClip
 import datetime
+import os
 
 # Create your views here.
 
-file_path = 'films/'
+file_path = 'app/static/uploaded_films/'
+ALLOWED_EXTENSIONS = ['.mp4']  # '.mkv', '.avi'
 
 @login_required
 def index(request):
@@ -27,6 +29,7 @@ def create(request):
     if request.method == 'GET':
         return render(request, 'films/create.html')
     elif request.method == "POST":
+        # validation
         if not request.FILES.get('file'):
             messages.error(request, 'Vyberte prosím soubor')
             return HttpResponseBadRequest()
@@ -34,22 +37,38 @@ def create(request):
 
         file = request.FILES['file']
 
-        if not file.name.endswith('.mp4'):
-            messages.error(request, 'Soubor není video ve formátu mp4')
+        file_extension = ''
+        for i in ALLOWED_EXTENSIONS:
+            if file.name.endswith(i):
+                file_extension = i
+        if file_extension == '':
+            messages.error(request, 'Formát není podporován')
             return HttpResponseBadRequest()
-            # return redirect('create')
 
-        film_url = file_path + file.name  # request.POST['name']
-        f = open(film_url, 'wb+')
+        if request.POST.get('csfd_link'):
+            if request.POST.get('csfd_link').find('https://www.csfd.cz/') == -1:
+                messages.error(request, 'Odkaz není na csfd!')
+                return HttpResponseBadRequest()
+
+        # end validation
+        try:
+            file_name = str(Film.objects.last().id + 1)
+        except:
+            file_name = '1'
+
+        film_url = file_name + file_extension  # request.POST['name']
+        f = open(file_path + film_url, 'wb+')
         for chunk in file.chunks():
             f.write(chunk)
         Film.objects.create(
             name=request.POST['name'],
-            duration=int(VideoFileClip(film_url).duration),
+            duration=int(VideoFileClip(file_path + film_url).duration),
             description=request.POST.get('description'),
             csfd_link=request.POST['csfd_link'],
             author=request.user,
-            film_url=film_url
+            film_url=film_url,
+            extension=file_extension,
+            size=os.stat(file_path + film_url).st_size
         )
         messages.success(request, 'Film byl přidán')
         return redirect('films')
@@ -57,8 +76,9 @@ def create(request):
 
 @login_required
 def show(request, id):
-    film = Film.objects.filter(id=id)
+    film = Film.objects.filter(id=id)[0]
     film.duration = datetime.timedelta(seconds=int(film.duration))
+    film.film_url = "uploaded_films/" + film.film_url
     return render(request, 'films/show.html',
                   {
                       'film': film,
@@ -81,7 +101,7 @@ def edit(request, id):
 
 @login_required
 def film(request, id):
-    film_url = Film.objects.filter(id=id)[0].film_url
+    film_url = file_path + Film.objects.filter(id=id)[0].film_url
     return FileResponse(open(film_url, 'rb'))
 
 

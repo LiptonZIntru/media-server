@@ -26,10 +26,10 @@ urlpatterns = [
     path('films/success/', film.upload_success),
     # path('films/<id>/', film.show),
 
-    path('films/<id>/', film.film), # temporary
+    path('films/<id>/', film.show),  # temporary
 
     path('films/<id>/edit', film.edit),
 
-    # path('film/<id>/', film.film)
+    path('film/<id>/', film.film)
 
 ]

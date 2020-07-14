@@ -5,7 +5,28 @@
 {% endblock %}
 
 {% block content %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    {% load static %}
+    <div style="width: 100%; height: 100%">
+        <h2 style="font-family: 'Roboto Mono', monospace; margin-top: 20px">{{ film.name }}</h2>
+        {% if film.description %}
+            <h4>Popis od autora: </h4>
+            <p>{{ film.description }}</p>
+        {% endif %}
+        {% if film.csfd_link %}
+            <p class="lead">Odkaz na csfd: <a href="{{ film.csfd_link }}" target="_blank">{{ film.csfd_link }}</a></p>
+        {% endif %}
+        <p class="lead">Délka: {{ film.duration }}</p>
+        <p class="lead">Přidáno uživatelem: {{ film.author }}</p>
+        <p class="lead">Přípona souboru: {{ film.extension }}</p>
+        <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
+        <video width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px">
+            <!--<source src="{% static film.film_url %}" type="video/{{ film.extension|slice:"1:" }}">-->
+            <source src="/film/{{ film.id }}" type="video/{{ film.extension|slice:"1:" }}">
+            Tvůj prohlížeč nepodporuje tento typ videí.
+        </video>
+    </div>
 {% endblock %}
 
 {% block js %}

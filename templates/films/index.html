@@ -5,11 +5,12 @@
 {% endblock %}
 
 {% block content %}
+    {% load static %}
     <div style="padding-top: 50px"></div>
     <table class="table table-responsive-sm">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID</th>
+          <th scope="col">Přehrát</th>
           <th scope="col">Jméno</th>
           <th scope="col">Délka</th>
           <th scope="col">csfd odkaz</th>
@@ -17,14 +18,14 @@
       </thead>
       <tbody>
         {% for film in films %}
-            <tr class="clickable" id="{{ film.id }}">
-                <th scope="row">{{ film.id }}<a class="btn" style="visibility: hidden">DRZ PICU FAKT</a></th>
+            <tr class="" id="{{ film.id }}">
+                <th id="{{ film.id }}" scope="row"><a href="/films/{{ film.id }}/" style="margin-left: 10%"><img src="{% static "icons/play-button.png" %}" height="30px"></a></th>
                 <td>{{ film.name }}</td>
                 <td>{{ film.duration }}</td>
                 {% if film.csfd_link %}
                     <td><a href="#" onclick="openWebsite('{{ film.csfd_link }}')">{{ film.csfd_link }}</a></td>
                 {% else %}
-                    <td><a class="btn btn-success">Přidat</a></td>
+                    <td><a class="btn btn-success">Přidat odkaz (nefunkční)</a></td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -34,9 +35,6 @@
 
 {% block js %}
     <script>
-    /*$.ready(function () {
-
-    });*/
     var clicked = false;
     function openWebsite(url) {
         window.open(url, '_blank');

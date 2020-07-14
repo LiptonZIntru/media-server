@@ -44,12 +44,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Film(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     duration = models.CharField(max_length=50)
     description = models.TextField(null=True)
     csfd_link = models.CharField(max_length=150, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     film_url = models.CharField(max_length=100, unique=True)
+    extension = models.CharField(max_length=10)
+    size = models.IntegerField()
 
 
 class FilmViewed(models.Model):
