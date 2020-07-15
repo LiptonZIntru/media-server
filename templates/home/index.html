@@ -5,7 +5,66 @@
 {% endblock %}
 
 {% block content %}
-    bla bla bla idk co sem napsat
+    <div>
+        <h3 style="margin-left: 30px; margin-top: 30px">Nejsledovanější filmy</h3>
+        <div class="row" style="margin: auto">
+
+            {% for film in top_films %}
+                <div class="col-md-5" style="margin: 30px">
+                <a href="/films/{{ film_viewed.film.id }}" style="color: inherit;">
+                    <div class="card" style="">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ film.name }}
+                                {% if film.csfd_rating %}
+                                    &nbsp;{{ film.csfd_rating }}
+                                {% endif %}
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted" style="display: none">G</h6>
+                            <p class="card-text">
+                                {% if not film.csfd_description %}
+                                    < Není k dispozici popis >
+                                {% elif film.csfd_description|length > 200 %}
+                                    {{ film.csfd_description|slice:200 }}&nbsp;<a href="/films/{{ film.id }}">(Číst dále)</a>
+                                {% else %}
+                                    {{ film.csfd_description }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        <h3 style="margin-left: 30px; margin-top: 30px">Tvoje poslední filmy</h3>
+        <div class="row" style="margin: auto">
+            {% for film_viewed in last_viewed %}
+                <div class="col-md-5" style="margin: 30px">
+                <a href="/films/{{ film_viewed.film.id }}" style="color: inherit;">
+                    <div class="card" style="">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ film_viewed.film.name }}
+                                {% if film.csfd_rating %}
+                                    &nbsp;{{ film_viewed.film.csfd_rating }}
+                                {% endif %}
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted" style="display: none">G</h6>
+                            <p class="card-text">
+                                {% if not film_viewed.film.csfd_description %}
+                                    < Není k dispozici popis >
+                                {% elif film.csfd_description|length > 200 %}
+                                    {{ film_viewed.film.csfd_description|slice:200 }}&nbsp;<a href="/films/{{ film_viewed.film.id }}">(Číst dále)</a>
+                                {% else %}
+                                    {{ film_viewed.film.csfd_description }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}

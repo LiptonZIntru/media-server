@@ -3,7 +3,7 @@ from django.http import FileResponse, HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
-from app.models import User, FilmViewed, Film
+from app.models import User, FilmViewed, Film, LastViewed
 from app.decorators import login_required
 import moviepy
 from moviepy.editor import VideoFileClip
@@ -64,11 +64,24 @@ def create(request):
         f = open(file_path + film_url, 'wb+')
         for chunk in file.chunks():
             f.write(chunk)
+
+        try:
+            csfd_page = requests.get(request.POST['csfd_link'], headers={
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'})
+            soup = BeautifulSoup(csfd_page.text, 'html.parser')
+            csfd_description = soup.body.find(id="plots").select('div > div')[1].ul.li.select('li > div')[0].get_text()
+            csfd_rating = soup.body.find(id="rating").h2.get_text()
+        except:
+            csfd_description = None
+            csfd_rating = None
+
         Film.objects.create(
             name=request.POST['name'],
             duration=int(VideoFileClip(file_path + film_url).duration),
             description=request.POST.get('description'),
             csfd_link=request.POST['csfd_link'],
+            csfd_description=csfd_description,
+            csfd_rating=csfd_rating,
             author=request.user,
             film_url=film_url,
             extension=file_extension,
@@ -80,29 +93,23 @@ def create(request):
 
 @login_required
 def show(request, id):
-    film = Film.objects.filter(id=id)[0]
+    film = Film.objects.get(id=id)
     film.duration = datetime.timedelta(seconds=int(film.duration))
     film.film_url = "uploaded_films/" + film.film_url
-
-    try:
-        csfd_page = requests.get(film.csfd_link, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'})
-        soup = BeautifulSoup(csfd_page.text, 'html.parser')
-        csfd_description = soup.body.find(id="plots").select('div > div')[1].ul.li.select('li > div')[0].get_text()
-        csfd_rating = soup.body.find(id="rating").h2.get_text()
-    except:
-        csfd_description = None
-        csfd_rating = None
 
     try:
         watched_time = FilmViewed.objects.filter(film__id=id, user=request.user).first().duration
     except:
         watched_time = 0
 
+    LastViewed.objects.create(
+        film=film,
+        user=request.user,
+    )
+
     return render(request, 'films/show.html',
                   {
                       'film': film,
-                      'csfd_description': csfd_description,
-                      'csfd_rating': csfd_rating,
                       'watched_time': watched_time,
                   })
 
@@ -122,13 +129,16 @@ def upload_success(request):
 @login_required
 def saveViewed(request, id):
     viewed = FilmViewed.objects.filter(film=Film.objects.get(id=id), user=request.user).first()
+    film = Film.objects.get(id=id)
+    film.watched_seconds = film.watched_seconds + 3
+    film.save()
     if viewed:
         viewed.duration = request.POST['time']
         viewed.save()
     else:
         FilmViewed.objects.create(
             duration=request.POST['time'],
-            film=Film.objects.get(id=id),
+            film=film,
             user=request.user,
         )
     return HttpResponse('true')

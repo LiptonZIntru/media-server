@@ -40,19 +40,19 @@
             <p class="lead">Přípona souboru: {{ film.extension }}</p>
             <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
-            {% if csfd_description %}
-                {% if csfd_rating %}
-                    <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ csfd_rating }})</h4>
+            {% if film.csfd_description %}
+                {% if film.csfd_rating %}
+                    <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ film.csfd_rating }})</h4>
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text">{{ csfd_description }}</p>
+                            <p class="card-text">{{ film.csfd_description }}</p>
                         </div>
                     </div>
                 {% endif %}
             {% endif %}
         </div>
         <video id="video" width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; margin-bottom: 100px; max-height: 50%" playsinline>
-            <source src="{% static film.film_url %}#t=50" type="video/{{ film.extension|slice:"1:" }} ">
+            <source src="{% static film.film_url %}#t=50" type="video/{{ film.extension|slice:"1:" }}">
             Tvůj prohlížeč nepodporuje tento typ videí.
         </video>
     </div>
