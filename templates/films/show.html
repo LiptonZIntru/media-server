@@ -22,13 +22,17 @@
         <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
         <video width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; max-height: 50%">
-            <!--<source src="{% static film.film_url %}" type="video/{{ film.extension|slice:"1:" }}">-->
-            <source src="/film/{{ film.id }}" type="video/{{ film.extension|slice:"1:" }}">
+            <source id="video" src="{% static film.film_url %}" type="video/{{ film.extension|slice:"1:" }}">
             Tvůj prohlížeč nepodporuje tento typ videí.
         </video>
     </div>
 {% endblock %}
 
 {% block js %}
-
+    <script>
+        /*document.getElementById('video').addEventListener('loadedmetadata', function() {
+            alert('sagadsg');
+            this.currentTime = 50;
+        }, false);*/
+    </script>
 {% endblock %}
