@@ -30,7 +30,7 @@
 </head>
 <body>
 	<div class="limiter" style="z-index: -1">
-		<div class="container-login100" style="background-image: url('{% static "images/bg-01.jpg" %}');">
+		<div class="container-login100" style="background-image: url('{% static "auth/images/bg-01.jpg" %}');">
             <div style="left: auto; right: auto; position: absolute; top: 10%; min-width: 200px; max-width: 70%">
                 {% if messages %}
                     {% for message in messages %}
@@ -48,16 +48,16 @@
 					</span>
 
 					<span class="login100-form-title p-b-34 p-t-27">
-						Log in
+						PŘIHLÁŠENÍ
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input class="input100" type="text" name="username" placeholder="Username">
+						<input class="input100" type="text" name="username" placeholder="Jméno">
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="password" placeholder="Password">
+						<input class="input100" type="password" name="password" placeholder="Heslo">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
@@ -84,7 +84,7 @@
 	<script src="{% static "auth/vendor/select2/select2.min.js" %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static "auth/vendor/daterangepicker/moment.min.js" %}"></script>
-	<script src="{% static "vendor/daterangepicker/daterangepicker.js" %}"></script>
+	<script src="{% static "auth/vendor/daterangepicker/daterangepicker.js" %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static "auth/vendor/countdowntime/countdowntime.js" %}"></script>
 <!--===============================================================================================-->
