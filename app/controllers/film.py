@@ -94,7 +94,7 @@ def show(request, id):
         csfd_rating = None
 
     try:
-        watched_time = FilmViewed.objects.filter(film__id=id).first().duration
+        watched_time = FilmViewed.objects.filter(film__id=id, user=request.user).first().duration
     except:
         watched_time = 0
 
@@ -136,11 +136,10 @@ def upload_success(request):
 @require_http_methods(['POST'])
 @login_required
 def saveViewed(request, id):
-    viewed = FilmViewed.objects.filter(film=Film.objects.get(id=id), user=request.user)
+    viewed = FilmViewed.objects.filter(film=Film.objects.get(id=id), user=request.user).first()
     if viewed:
-        viewed.update(
-            duration=request.POST['time']
-        )
+        viewed.duration = request.POST['time']
+        viewed.save()
     else:
         FilmViewed.objects.create(
             duration=request.POST['time'],
@@ -155,8 +154,9 @@ def saveViewed(request, id):
 def edit_csfd(request, id):
     if request.method == "GET":
         return render(request, 'films/edit_csfd.html')
-    Film.objects.filter(id=id).update(
-        csfd_link=request.POST.get('csfd_link')
-    )
+    film = Film.objects.get(id=id)
+    film.csfd_link = request.POST.get('csfd_link')
+    film.save()
+
     messages.success(request, 'CSFD odkaz přidán')
     return redirect('films')

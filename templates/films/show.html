@@ -60,18 +60,30 @@
 
 {% block js %}
     <script>
-        document.getElementById('video').currentTime = {{ watched_time }};
+        var ready = false;
+        setInterval(function () {
+            if(document.getElementById('video').currentTime != {{ watched_time }} && !ready)
+            {
+                document.getElementById('video').currentTime = {{ watched_time }};
+            }
+            else
+            {
+                ready = true;
+            }
+        }, 1);
 
-        $(window).on('beforeunload', function(){
-            console.log("beforeUnload event!");
-            $.ajax({
-                type: "POST",
-                url: '/films/{{ film.id }}/save/',
-                data: {
-                    'time': document.getElementById('video').currentTime,
-                },
-            });
-        });
+        setInterval(function () {
+            if(ready)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '/films/{{ film.id }}/save/',
+                    data: {
+                        'time': document.getElementById('video').currentTime,
+                    },
+                });
+            }
+        }, 3000);
 
         function deleteFilm() {
             if(!confirm("Do you really want to delete film?"))
