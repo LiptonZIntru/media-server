@@ -106,21 +106,6 @@ def show(request, id):
                       'watched_time': watched_time,
                   })
 
-
-@login_required
-def edit(request, id):
-    if request.method == 'GET':
-        film = Film.objects.get(id=id)
-        return render(request, 'films/edit.html',
-                      {
-                          'film': film,
-                      })
-    elif request.method == "POST":
-        # TODO
-        messages.success(request, 'Film byl editován')
-        return redirect('films')
-
-
 @login_required
 def film(request, id):
     film_url = file_path + Film.objects.get(id=id).film_url
