@@ -9,7 +9,11 @@ from app.models import User, FilmViewed, Film, LastViewed
 @login_required
 def index(request):
     films = LastViewed.objects.filter(user=request.user).order_by('id').reverse()
-    last_viewed = [films[0], ]
+    last_viewed = []
+    try:
+        last_viewed.append(films[0])
+    except:
+        pass
     for i in films[1:len(films)]:
         valid = True
         for a in last_viewed:
