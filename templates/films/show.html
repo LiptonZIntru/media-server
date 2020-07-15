@@ -23,13 +23,15 @@
             <p class="lead">Přípona souboru: {{ film.extension }}</p>
             <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
-            {% if csfd_description and csdf_rating %}
-                <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ csfd_rating }})</h4>
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-text">{{ csfd_description }}</p>
+            {% if csfd_description %}
+                {% if csfd_rating %}
+                    <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ csfd_rating }})</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">{{ csfd_description }}</p>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             {% endif %}
         </div>
         <video width="50%" preload="auto" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; max-height: 50%">
