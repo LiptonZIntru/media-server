@@ -129,6 +129,9 @@
 {% block js %}
     <script>
         var uploaded = true;
+        $(document).ready(function () {
+            document.getElementById('created').hidden = true;
+        });
         $('#customFile').on('change',function(){
                 //get the file name
                 var fileName = $(this).val().replace('C:\\fakepath\\', " ");
