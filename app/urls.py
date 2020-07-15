@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
+
 from .controllers import auth, film, home
 
 urlpatterns = [
@@ -30,6 +32,7 @@ urlpatterns = [
 
     path('films/<id>/edit', film.edit),
 
-    path('film/<id>/', film.film)
+    path('film/<id>/', film.film),
 
+    path('films/<id>/save/', csrf_exempt(film.saveViewed)),
 ]

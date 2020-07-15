@@ -7,7 +7,7 @@
 {% block content %}
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     {% load static %}
-    <div style="width: 100%; height: 100%" onunload="saveTime()">
+    <div style="width: 100%; height: 100%">
         <div style="margin-left: 50px">
             <h2 style="font-family: 'Roboto Mono', monospace; margin-top: 20px">{{ film.name }}</h2>
             {% if film.description %}
@@ -34,8 +34,8 @@
                 {% endif %}
             {% endif %}
         </div>
-        <video width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; margin-bottom: 100px; max-height: 50%" playsinline>
-            <source id="video" src="{% static film.film_url %}" type="video/{{ film.extension|slice:"1:" }} ">
+        <video id="video" width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; margin-bottom: 100px; max-height: 50%" playsinline>
+            <source src="{% static film.film_url %}#t=50" type="video/{{ film.extension|slice:"1:" }} ">
             Tvůj prohlížeč nepodporuje tento typ videí.
         </video>
     </div>
@@ -43,12 +43,17 @@
 
 {% block js %}
     <script>
-        /*document.getElementById('video').addEventListener('loadedmetadata', function() {
-            alert('sagadsg');
-            this.currentTime = 50;
-        }, false);*/
-        function saveTime() {
-            alert('sagadsg');
-        }
+        document.getElementById('video').currentTime = {{ watched_time }};
+
+        $(window).on('beforeunload', function(){
+            console.log("beforeUnload event!");
+            $.ajax({
+                type: "POST",
+                url: '/films/{{ film.id }}/save/',
+                data: {
+                    'time': document.getElementById('video').currentTime,
+                },
+            });
+        });
     </script>
 {% endblock %}

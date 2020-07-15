@@ -1,6 +1,8 @@
 from django.contrib import messages
-from django.http import FileResponse, HttpResponseBadRequest
+from django.http import FileResponse, HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.http import require_http_methods
+
 from app.models import User, FilmViewed, Film
 from app.decorators import login_required
 import moviepy
@@ -91,18 +93,24 @@ def show(request, id):
         csfd_description = None
         csfd_rating = None
 
+    try:
+        watched_time = FilmViewed.objects.filter(film__id=id).first().duration
+    except:
+        watched_time = 0
+
     return render(request, 'films/show.html',
                   {
                       'film': film,
                       'csfd_description': csfd_description,
                       'csfd_rating': csfd_rating,
+                      'watched_time': watched_time,
                   })
 
 
 @login_required
 def edit(request, id):
     if request.method == 'GET':
-        film = Film.objects.filter(id=id)[0]
+        film = Film.objects.get(id=id)
         return render(request, 'films/edit.html',
                       {
                           'film': film,
@@ -115,7 +123,7 @@ def edit(request, id):
 
 @login_required
 def film(request, id):
-    film_url = file_path + Film.objects.filter(id=id)[0].film_url
+    film_url = file_path + Film.objects.get(id=id).film_url
     return FileResponse(open(film_url, 'rb'))
 
 
@@ -123,3 +131,20 @@ def film(request, id):
 def upload_success(request):
     messages.success(request, 'Film byl přidán')
     return redirect('films')
+
+
+# @require_http_methods(['POST'])
+@login_required
+def saveViewed(request, id):
+    viewed = FilmViewed.objects.filter(film=Film.objects.get(id=id), user=request.user)
+    if viewed:
+        viewed.update(
+            duration=request.POST['time']
+        )
+    else:
+        FilmViewed.objects.create(
+            duration=request.POST['time'],
+            film=Film.objects.get(id=id),
+            user=request.user,
+        )
+    return HttpResponse('true')
