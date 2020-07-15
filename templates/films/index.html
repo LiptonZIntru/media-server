@@ -25,7 +25,7 @@
                 {% if film.csfd_link %}
                     <td><a href="#" onclick="openWebsite('{{ film.csfd_link }}')">{{ film.csfd_link }}</a></td>
                 {% else %}
-                    <td><a class="btn btn-success">Přidat odkaz (nefunkční)</a></td>
+                    <td><a class="btn btn-success" href="/films/{{ film.id }}/csfd">Přidat odkaz</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

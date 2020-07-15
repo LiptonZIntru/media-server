@@ -40,6 +40,7 @@ def user_register(request):
                 request.POST['password'],
             )
             messages.success(request, 'Registrace úspěšná!')
+            messages.success(request, 'Zde se můžete přihlásit')
             return redirect('login')
         except:
             messages.error(request, 'Neznámá chyba')

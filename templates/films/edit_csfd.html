@@ -56,46 +56,20 @@
         <form class="contact100-form validate-form" enctype="multipart/form-data" method="post">
             {% csrf_token %}
           <span class="contact100-form-title">
-            Editovat film
+            PŘIDAT CSFD ODKAZ
           </span>
 
           <div
             class="wrap-input100 validate-input"
-            data-validate="Vyplňte prosím jméno"
-          >
-            <input
-              class="input100"
-              id="form_name"
-              type="text"
-              name="name"
-              value="{{ film.name }}"
-              placeholder="Jméno filmu"
-            />
-            <span class="focus-input100"></span>
-          </div>
-
-          <div
-            class="wrap-input100"
+            data-validate="Vyplňte prosím CSFD odkaz"
           >
             <input
               class="input100"
               type="text"
               name="csfd_link"
               value="{{ film.csfd_link }}"
-              placeholder="Odkaz na csfd (nepovinný)"
+              placeholder="CSFD odkaz"
             />
-            <span class="focus-input100"></span>
-          </div>
-
-          <div
-            class="wrap-input100"
-          >
-            <textarea
-              class="input100"
-              name="description"
-              value="{{ film.description }}"
-              placeholder="Popis (nepovinný)"
-            ></textarea>
             <span class="focus-input100"></span>
           </div>
 
@@ -103,7 +77,7 @@
             <button class="contact100-form-btn">
               <span>
                 <i class="fa fa-paper-plane-o m-r-6" aria-hidden="true"></i>
-                Uložit
+                Přidat
               </span>
             </button>
           </div>

@@ -133,7 +133,7 @@ def upload_success(request):
     return redirect('films')
 
 
-# @require_http_methods(['POST'])
+@require_http_methods(['POST'])
 @login_required
 def saveViewed(request, id):
     viewed = FilmViewed.objects.filter(film=Film.objects.get(id=id), user=request.user)
@@ -148,3 +148,15 @@ def saveViewed(request, id):
             user=request.user,
         )
     return HttpResponse('true')
+
+
+@require_http_methods(['GET', 'POST'])
+@login_required
+def edit_csfd(request, id):
+    if request.method == "GET":
+        return render(request, 'films/edit_csfd.html')
+    Film.objects.filter(id=id).update(
+        csfd_link=request.POST.get('csfd_link')
+    )
+    messages.success(request, 'CSFD odkaz přidán')
+    return redirect('films')

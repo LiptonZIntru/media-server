@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
 
 from .controllers import auth, film, home
+from .controllers.admin import adminfilm
 
 urlpatterns = [
     path('', home.index, name='index'),
@@ -27,13 +28,13 @@ urlpatterns = [
     path('films/', film.index, name='films'),
     path('films/create/', film.create, name='create'),
     path('films/success/', film.upload_success),
-    # path('films/<id>/', film.show),
-
-    path('films/<id>/', film.show),  # temporary
-
-    path('films/<id>/edit', film.edit),
-
-    path('film/<id>/', film.film),
-
+    path('films/<id>/', film.show),
     path('films/<id>/save/', csrf_exempt(film.saveViewed)),
+    path('films/<id>/csfd/', film.edit_csfd),
+    # path('film/<id>/', film.film),
+
+
+    # Admin urls
+    path('films/<id>/edit/', adminfilm.edit),
+    path('films/<id>/delete/', adminfilm.delete),
 ]
