@@ -18,15 +18,12 @@
                     </div>
                 </div>
             {% endif %}
-            {% if film.csfd_link %}
-                <p class="lead">Odkaz na csfd: <a href="{{ film.csfd_link }}" target="_blank">{{ film.csfd_link }}</a></p>
-            {% endif %}
             <p class="lead">Délka: {{ film.duration }}</p>
             <p class="lead">Přidáno uživatelem: {{ film.author }}</p>
             <p class="lead">Přípona souboru: {{ film.extension }}</p>
             <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
-            {% if csfd_description %}
+            {% if csfd_description and csdf_rating %}
                 <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ csfd_rating }})</h4>
                 <div class="card">
                     <div class="card-body">
