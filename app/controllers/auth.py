@@ -6,6 +6,7 @@ from app.decorators import login_required
 
 
 # Create your views here.
+from app.models import User
 
 
 @require_http_methods(["GET", "POST"])
@@ -24,6 +25,27 @@ def user_login(request):
         else:
             messages.error(request, 'Špatné údaje!')
             return redirect('login')
+
+
+@require_http_methods(["GET", "POST"])
+def user_register(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    elif request.method == "GET":
+        return render(request, 'auth/register.html')
+    else:
+        try:
+            User.objects.create_user(
+                request.POST['username'],
+                request.POST['password'],
+            )
+            messages.success(request, 'Registrace úspěšná!')
+            return redirect('login')
+        except:
+            messages.error(request, 'Neznámá chyba')
+            return redirect('register')
+
+
 
 @login_required
 @require_http_methods(["GET"])

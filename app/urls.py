@@ -22,6 +22,7 @@ from .controllers import auth, film, home
 urlpatterns = [
     path('', home.index, name='index'),
     path('login/', auth.user_login, name='login'),
+    path('register/', auth.user_register, name='register'),
     path('logout/', auth.user_logout),
     path('films/', film.index, name='films'),
     path('films/create/', film.create, name='create'),
