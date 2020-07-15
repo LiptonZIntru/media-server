@@ -27,7 +27,7 @@
             <p class="lead">Velikost: {{ film.size|filesizeformat }}</p>
 
             {% if csfd_description %}
-                <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>: </h4>
+                <h4>Popis z <a href="{{ film.csfd_link }}">CSFD</a>&nbsp;({{ csfd_rating }})</h4>
                 <div class="card">
                     <div class="card-body">
                         <p class="card-text">{{ csfd_description }}</p>
