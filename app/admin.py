@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Film)
 admin.site.register(FilmViewed)
+admin.site.register(LastViewed)

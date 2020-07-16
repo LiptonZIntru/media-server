@@ -52,7 +52,7 @@
             {% endif %}
         </div>
         <video id="video" width="50%" controls style="margin-left: auto; margin-right: auto; display: block; margin-top: 100px; margin-bottom: 100px; max-height: 50%" playsinline>
-            <source src="{% static film.film_url %}#t=50" type="video/{{ film.extension|slice:"1:" }}">
+            <source src="{% static film.film_url %}" type="video/{{ film.extension|slice:"1:" }} ">
             Tvůj prohlížeč nepodporuje tento typ videí.
         </video>
     </div>
