@@ -61,12 +61,18 @@
 {% block js %}
     <script>
         var ready = false;
+        var time = 0;
         setInterval(function () {
+            time++;
             if(document.getElementById('video').currentTime != {{ watched_time }} && !ready)
             {
                 document.getElementById('video').currentTime = {{ watched_time }};
             }
             else
+            {
+                ready = true;
+            }
+            if(time > 3000)
             {
                 ready = true;
             }
